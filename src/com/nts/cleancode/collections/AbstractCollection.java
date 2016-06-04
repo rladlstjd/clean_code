@@ -2,7 +2,7 @@ package com.nts.cleancode.collections;
 
 public abstract class AbstractCollection {
 	private static int INITIAL_CAPACITY = 10;
-	protected Object[] elements = new Object[10];
+	protected Object[] elements = new Object[INITIAL_CAPACITY];
 	protected boolean readOnly;
 	protected int size = 0;
 
@@ -15,11 +15,6 @@ public abstract class AbstractCollection {
 		}
 
 	}
-
-	public void add(Object key, Object value) {
-	}
-
-	public abstract void add(Object element);
 
 	public Object get(int i) {
 		return elements[i];
@@ -56,6 +51,17 @@ public abstract class AbstractCollection {
 		return size == 0;
 	}
 
+	public void add(Object element) {
+		if (readOnly)
+			return;
+
+		if (shouldGrow()) {
+			grow();
+		}
+
+		addElement(element);
+	}
+
 	protected void addElement(Object element) {
 		elements[size++] = element;
 	}
@@ -85,4 +91,5 @@ public abstract class AbstractCollection {
 	public int capacity() {
 		return elements.length;
 	}
+
 }
